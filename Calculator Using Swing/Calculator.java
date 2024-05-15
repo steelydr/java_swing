@@ -10,7 +10,7 @@ public class Calculator extends JFrame implements ActionListener {
     private JButton[] numberButtons;
     private JButton addButton, subButton, mulButton, divButton, equalsButton, clearButton, decimalButton, negateButton,
             percentButton, squareRootButton;
-    private double operand1, operand2, result;
+    private double result, operand;
     private char operator;
     private boolean isOperandEntered;
     private boolean isOperationPerformed;
@@ -134,59 +134,85 @@ public class Calculator extends JFrame implements ActionListener {
 
         historyBuilder = new StringBuilder();
         decimalFormat = new DecimalFormat("#.###########");
+
+        result = 0;
+        operand = 0;
+        operator = ' ';
+        isOperandEntered = false;
+        isOperationPerformed = false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if (command.matches("\\d")) {
-            if (isOperandEntered) {
+            if (isOperandEntered || display.getText().equals("0")) {
                 display.setText("");
                 isOperandEntered = false;
             }
             display.setText(display.getText() + command);
         } else if (command.equals("+") || command.equals("-") || command.equals("*") || command.equals("/")) {
-            if (isOperationPerformed) {
-                operand1 = result;
-                historyBuilder.append(" ").append(operator).append(" ").append(decimalFormat.format(operand2));
+            if (!isOperationPerformed) {
+                result = Double.parseDouble(display.getText());
+                historyBuilder.append(decimalFormat.format(result)).append(" ").append(command).append(" ");
             } else {
-                operand1 = Double.parseDouble(display.getText());
-                historyBuilder.append(decimalFormat.format(operand1)).append(" ").append(command).append(" ");
+                operand = Double.parseDouble(display.getText());
+                switch (operator) {
+                    case '+':
+                        result += operand;
+                        break;
+                    case '-':
+                        result -= operand;
+                        break;
+                    case '*':
+                        result *= operand;
+                        break;
+                    case '/':
+                        if (operand == 0) {
+                            display.setText("Error: Division by Zero");
+                            return;
+                        } else {
+                            result /= operand;
+                        }
+                        break;
+                }
+                historyBuilder.append(decimalFormat.format(operand)).append(" ").append(command).append(" ");
             }
             operator = command.charAt(0);
             isOperandEntered = true;
-            isOperationPerformed = false;
-            display.setText("");
-        } else if (command.equals("=")) {
-            operand2 = Double.parseDouble(display.getText());
-            switch (operator) {
-                case '+':
-                    result = operand1 + operand2;
-                    break;
-                case '-':
-                    result = operand1 - operand2;
-                    break;
-                case '*':
-                    result = operand1 * operand2;
-                    break;
-                case '/':
-                    if (operand2 == 0) {
-                        display.setText("Error: Division by Zero");
-                    } else {
-                        result = operand1 / operand2;
-                    }
-                    break;
-            }
-            display.setText(String.valueOf(result));
-            historyBuilder.append(decimalFormat.format(operand2)).append(" = ").append(decimalFormat.format(result));
-            history.setText(historyBuilder.toString());
-            isOperandEntered = true;
             isOperationPerformed = true;
+            display.setText(decimalFormat.format(result));
+        } else if (command.equals("=")) {
+            if (isOperationPerformed) {
+                operand = Double.parseDouble(display.getText());
+                switch (operator) {
+                    case '+':
+                        result += operand;
+                        break;
+                    case '-':
+                        result -= operand;
+                        break;
+                    case '*':
+                        result *= operand;
+                        break;
+                    case '/':
+                        if (operand == 0) {
+                            display.setText("Error: Division by Zero");
+                            return;
+                        } else {
+                            result /= operand;
+                        }
+                        break;
+                }
+                display.setText(decimalFormat.format(result));
+                historyBuilder.append(decimalFormat.format(operand)).append(" = ").append(decimalFormat.format(result));
+                history.setText(historyBuilder.toString());
+                isOperandEntered = true;
+                isOperationPerformed = false;
+            }
         } else if (command.equals("C")) {
             display.setText("");
             history.setText("");
-            operand1 = 0;
-            operand2 = 0;
             result = 0;
             operator = ' ';
             isOperandEntered = false;
