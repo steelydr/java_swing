@@ -1,4 +1,5 @@
 ![alt text](image.png)
+![alt text](image-1.png)
 
 1. The Calculator class is created, extending JFrame and implementing ActionListener.
 
