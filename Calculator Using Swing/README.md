@@ -6,6 +6,7 @@
 
 ***Time estimation of addition operation***
 ![alt text](image-2.png)
+![alt text](image.png)
 
 1. The Calculator class is created, extending JFrame and implementing ActionListener.
 

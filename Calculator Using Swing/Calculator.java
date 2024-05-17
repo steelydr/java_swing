@@ -160,7 +160,7 @@ public class Calculator extends JFrame implements ActionListener {
                 operand = Double.parseDouble(display.getText());
                 switch (operator) {
                     case '+':
-                        result += operand;
+                        result = addTwoNumbers((int) result, (int) operand);
                         break;
                     case '-':
                         result -= operand;
@@ -193,7 +193,7 @@ public class Calculator extends JFrame implements ActionListener {
                 operand = Double.parseDouble(display.getText());
                 switch (operator) {
                     case '+':
-                        result += operand;
+                        result = addTwoNumbers((int) result, (int) operand);
                         break;
                     case '-':
                         result -= operand;
@@ -253,6 +253,43 @@ public class Calculator extends JFrame implements ActionListener {
                     display.setText("Error: Invalid input for square root");
                 }
             }
+        }
+    }
+
+    public static int addTwoNumbers(int num1, int num2) {
+        String strNum1 = Integer.toString(num1);
+        String strNum2 = Integer.toString(num2);
+        if (strNum1.length() < strNum2.length()) {
+            String temp = strNum1;
+            strNum1 = strNum2;
+            strNum2 = temp;
+        }
+
+        StringBuilder result = new StringBuilder();
+        strNum1 = new StringBuilder(strNum1).reverse().toString();
+        strNum2 = new StringBuilder(strNum2).reverse().toString();
+
+        int carry = 0;
+        int length = strNum1.length();
+        for (int i = 0; i < length; i++) {
+            int digit1 = Character.getNumericValue(strNum1.charAt(i));
+            int digit2 = i < strNum2.length() ? Character.getNumericValue(strNum2.charAt(i)) : 0;
+
+            int sum = digit1 + digit2 + carry;
+            carry = sum / 10;
+            result.append(sum % 10);
+        }
+        if (carry > 0) {
+            result.append(carry);
+        }
+
+        String finalResult = result.reverse().toString();
+
+        try {
+            return Integer.parseInt(finalResult);
+        } catch (NumberFormatException e) {
+            System.err.println("Result exceeds the range of int type.");
+            return 0;
         }
     }
 
