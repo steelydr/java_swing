@@ -1,6 +1,8 @@
-![alt text](image.png)
-***After fixing Multiple Operands functionality***
+
+***Multiple Operands functionality***
 ![alt text](image-1.png)
+
+
 
 ***Time estimation of addition operation***
 ![alt text](image-2.png)
