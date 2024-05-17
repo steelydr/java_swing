@@ -152,6 +152,7 @@ public class Calculator extends JFrame implements ActionListener {
             }
             display.setText(display.getText() + command);
         } else if (command.equals("+") || command.equals("-") || command.equals("*") || command.equals("/")) {
+            long startTime = System.nanoTime();
             if (!isOperationPerformed) {
                 result = Double.parseDouble(display.getText());
                 historyBuilder.append(decimalFormat.format(result)).append(" ").append(command).append(" ");
@@ -178,11 +179,16 @@ public class Calculator extends JFrame implements ActionListener {
                 }
                 historyBuilder.append(decimalFormat.format(operand)).append(" ").append(command).append(" ");
             }
+            long endTime = System.nanoTime();
+            double duration = (endTime - startTime) / 1000000.0;
+            String formattedDuration = String.format("%.6f", duration);
+            history.setText(historyBuilder.toString() + " [" + formattedDuration + " ms]");
             operator = command.charAt(0);
             isOperandEntered = true;
             isOperationPerformed = true;
             display.setText(decimalFormat.format(result));
         } else if (command.equals("=")) {
+            long startTime = System.nanoTime();
             if (isOperationPerformed) {
                 operand = Double.parseDouble(display.getText());
                 switch (operator) {
@@ -206,7 +212,10 @@ public class Calculator extends JFrame implements ActionListener {
                 }
                 display.setText(decimalFormat.format(result));
                 historyBuilder.append(decimalFormat.format(operand)).append(" = ").append(decimalFormat.format(result));
-                history.setText(historyBuilder.toString());
+                long endTime = System.nanoTime();
+                double duration = (endTime - startTime) / 1000000.0;
+                String formattedDuration = String.format("%.6f", duration);
+                history.setText(historyBuilder.toString() + " [" + formattedDuration + " ms]");
                 isOperandEntered = true;
                 isOperationPerformed = false;
             }

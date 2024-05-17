@@ -1,5 +1,9 @@
 ![alt text](image.png)
+***After fixing Multiple Operands functionality***
 ![alt text](image-1.png)
+
+***Time estimation of addition operation***
+![alt text](image-2.png)
 
 1. The Calculator class is created, extending JFrame and implementing ActionListener.
 
